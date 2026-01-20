@@ -56,8 +56,8 @@ function formatDate(dateString: string): string {
 
 如果你有任何问题或建议，欢迎通过以下方式联系我：
 
-- GitHub: [@Faker-Lost](https://github.com)
-- Email: your@email.com
+- GitHub: [@Faker-Lost](https://github.com/Faker-Lost)
+- Email: [1348098935@qq.com](mailto:1348098935@qq.com)
 
 ---
 
