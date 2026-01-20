@@ -16,6 +16,7 @@ export interface PostMeta {
   excerpt: string;
   tags: string[];
   coverImage?: string;
+  featured?: boolean; // 是否为精选文章
 }
 
 // 完整文章类型（含内容）
@@ -57,6 +58,7 @@ export function getAllPosts(): PostMeta[] {
         excerpt: data.excerpt || '',
         tags: data.tags || [],
         coverImage: data.coverImage,
+        featured: data.featured || false,
       } as PostMeta;
     });
 
@@ -94,6 +96,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       excerpt: data.excerpt || '',
       tags: data.tags || [],
       coverImage: data.coverImage,
+      featured: data.featured || false,
       content: htmlContent,
       headings,
     };
