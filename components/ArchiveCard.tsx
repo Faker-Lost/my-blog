@@ -8,7 +8,8 @@ interface ArchiveCardProps {
 interface ArchiveGroup {
   year: string;
   months: Array<{
-    month: string;
+    month: string;  // 数字月份 "01", "02"...
+    monthName: string; // 中文月份名
     count: number;
   }>;
 }
@@ -17,27 +18,33 @@ export default function ArchiveCard({ posts }: ArchiveCardProps) {
   // 按年月分组统计文章
   const archiveGroups: ArchiveGroup[] = [];
 
-  const yearMonthMap = new Map<string, Map<string, number>>();
+  const yearMonthMap = new Map<string, Map<string, { name: string; count: number }>>();
 
   posts.forEach((post) => {
     if (!post.date) return;
 
     const date = new Date(post.date);
     const year = date.getFullYear().toString();
-    const month = date.toLocaleString('zh-CN', { month: 'long' });
+    const monthNum = (date.getMonth() + 1).toString().padStart(2, '0'); // "01", "02"...
+    const monthName = date.toLocaleString('zh-CN', { month: 'long' }); // "一月", "二月"...
 
     if (!yearMonthMap.has(year)) {
       yearMonthMap.set(year, new Map());
     }
 
     const monthMap = yearMonthMap.get(year)!;
-    monthMap.set(month, (monthMap.get(month) || 0) + 1);
+    const existing = monthMap.get(monthNum);
+    if (existing) {
+      existing.count++;
+    } else {
+      monthMap.set(monthNum, { name: monthName, count: 1 });
+    }
   });
 
   // 转换为数组并排序
   yearMonthMap.forEach((monthMap, year) => {
     const months = Array.from(monthMap.entries())
-      .map(([month, count]) => ({ month, count }))
+      .map(([month, data]) => ({ month, monthName: data.name, count: data.count }))
       .reverse(); // 最新月份在前
 
     archiveGroups.push({ year, months });
@@ -87,7 +94,7 @@ export default function ArchiveCard({ posts }: ArchiveCardProps) {
                   <span className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[var(--border)]
                                        group-hover:bg-[var(--accent)] transition-colors"></span>
-                    {item.month}
+                    {item.monthName}
                   </span>
                   <span className="text-xs">{item.count}</span>
                 </Link>
