@@ -131,7 +131,7 @@ export default async function PostPage({ params }: PostPageProps) {
           />
 
           {/* 评论系统 */}
-          <Giscus postSlug={post.slug} title={post.title} />
+          <Giscus />
 
           {/* 底部分隔 */}
           <footer className="mt-12 pt-8 border-t border-[var(--border)]">
