@@ -10,7 +10,10 @@ interface TagPageProps {
 // 生成静态路由参数
 export async function generateStaticParams() {
   const tags = getAllTags();
-  return tags.map((tag) => ({ tag: encodeURIComponent(tag.name) }));
+  // 对中文标签进行双重编码，确保路由正确处理
+  return tags.map((tag) => ({
+    tag: encodeURIComponent(encodeURIComponent(tag.name))
+  }));
 }
 
 // 生成页面元数据
@@ -18,7 +21,8 @@ export async function generateMetadata({
   params,
 }: TagPageProps): Promise<Metadata> {
   const { tag } = await params;
-  const decodedTag = decodeURIComponent(tag);
+  // 使用双重解码来匹配 generateStaticParams 中的双重编码
+  const decodedTag = decodeURIComponent(decodeURIComponent(tag));
   return {
     title: `标签: ${decodedTag}`,
     description: `查看所有标签为"${decodedTag}"的文章`,
@@ -27,7 +31,8 @@ export async function generateMetadata({
 
 export default async function TagPage({ params }: TagPageProps) {
   const { tag } = await params;
-  const decodedTag = decodeURIComponent(tag);
+  // 使用双重解码来匹配 generateStaticParams 中的双重编码
+  const decodedTag = decodeURIComponent(decodeURIComponent(tag));
   const posts = getPostsByTag(decodedTag);
 
   return (

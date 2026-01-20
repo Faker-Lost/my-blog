@@ -26,7 +26,7 @@ export default function TagsPage() {
           {tags.map((tag) => (
             <Link
               key={tag.name}
-              href={`/tags/${encodeURIComponent(tag.name)}`}
+              href={`/tags/${encodeURIComponent(encodeURIComponent(tag.name))}`}
               className="group px-4 py-2 bg-[var(--card)] border border-[var(--border)]
                          rounded-lg hover:border-[var(--accent)] hover:shadow-md
                          transition-all"
