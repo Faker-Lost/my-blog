@@ -47,7 +47,7 @@ function formatDate(dateString: string): string {
 
 我计划在这里分享：
 
-1. **技术文章** - 前端、后端、架构设计
+1. **技术文章** - C++、Python、机器视觉等技术领域的学习心得
 2. **项目实践** - 实际项目中的经验与教训
 3. **读书笔记** - 技术书籍和其他领域的阅读心得
 4. **生活随笔** - 一些思考和感悟
@@ -56,7 +56,7 @@ function formatDate(dateString: string): string {
 
 如果你有任何问题或建议，欢迎通过以下方式联系我：
 
-- GitHub: [@Faker-Lost](https://github.com/Faker-Lost)
+- GitHub: [@Faker-Lost](https://github.com)
 - Email: [1348098935@qq.com](mailto:1348098935@qq.com)
 
 ---
