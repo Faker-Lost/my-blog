@@ -10,9 +10,9 @@ interface TagPageProps {
 // 生成静态路由参数
 export async function generateStaticParams() {
   const tags = getAllTags();
-  // 使用单重编码，与标签云页面保持一致
+  // Next.js 会自动对参数进行 URL 编码，所以这里直接返回原始标签名
   return tags.map((tag) => ({
-    tag: encodeURIComponent(tag.name)
+    tag: tag.name
   }));
 }
 
