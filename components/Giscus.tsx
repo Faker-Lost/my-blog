@@ -3,13 +3,12 @@
 import Giscus from '@giscus/react';
 
 export default function GiscusComments() {
-  // 从 giscus.app 获取这些值
-  // 这里使用占位符，用户需要替换为实际值
+  // 从 giscus.app 获取的配置
   const config = {
-    repo: 'your-username/your-repo' as `${string}/${string}`,
-    repoId: 'YOUR_REPO_ID',
+    repo: 'Faker-Lost/my-blog' as `${string}/${string}`,
+    repoId: 'R_kgDOQ9iDcg',
     category: 'General',
-    categoryId: 'YOUR_CATEGORY_ID',
+    categoryId: 'DIC_kwDOQ9iDcs4C1Mig',
     mapping: 'pathname' as const,
     reactionsEnabled: '1' as '0' | '1',
     emitMetadata: '0' as '0' | '1',
