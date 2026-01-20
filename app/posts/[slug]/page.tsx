@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getPostBySlug, getAllPostSlugs } from '@/lib/posts';
 import TableOfContents from '@/components/TableOfContents';
+import Giscus from '@/components/Giscus';
 import { format } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 
@@ -128,6 +129,9 @@ export default async function PostPage({ params }: PostPageProps) {
             className="prose"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
+          {/* 评论系统 */}
+          <Giscus postSlug={post.slug} title={post.title} />
 
           {/* 底部分隔 */}
           <footer className="mt-12 pt-8 border-t border-[var(--border)]">
