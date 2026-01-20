@@ -50,8 +50,8 @@ export default function AboutPage() {
         <ul>
           <li>
             <strong>GitHub</strong>:{' '}
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-              @username
+            <a href="https://github.com/Faker-Lost" target="_blank" rel="noopener noreferrer">
+              @Faker-Lost
             </a>
           </li>
           <li>
