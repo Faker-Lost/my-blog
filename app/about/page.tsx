@@ -55,7 +55,7 @@ export default function AboutPage() {
             </a>
           </li>
           <li>
-            <strong>Email</strong>: your@email.com
+            <strong>Email</strong>: <a href="mailto:1348098935@qq.com">1348098935@qq.com</a>
           </li>
         </ul>
 
