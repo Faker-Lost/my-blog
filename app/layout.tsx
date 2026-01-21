@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Serif_SC } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 // 使用 Noto Serif SC 作为主字体，传统优雅风格
@@ -57,6 +58,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );
