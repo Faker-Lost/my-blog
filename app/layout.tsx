@@ -15,8 +15,8 @@ const notoSerifSC = Noto_Serif_SC({
 
 export const metadata: Metadata = {
   title: {
-    default: "墨迹笔记 - 个人技术博客",
-    template: "%s | 墨迹笔记",
+    default: "🌈 墨迹笔记 - 个人技术博客",
+    template: "%s | 🌈 墨迹笔记",
   },
   description: "分享技术心得、项目经验与生活感悟的个人博客",
   keywords: ["博客", "技术", "前端", "后端", "编程"],
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "zh_CN",
-    siteName: "墨迹笔记",
+    siteName: "🌈 墨迹笔记",
   },
 };
 
