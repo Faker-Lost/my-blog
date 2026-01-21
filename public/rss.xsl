@@ -154,8 +154,8 @@
             <div class="info">
               <h3>🎯 如何使用 RSS？</h3>
               <p>复制此链接到 RSS 阅读器（如 <a href="https://feedly.com" target="_blank">Feedly</a>、<a href="https://inoreader.com" target="_blank">Inoreader</a>）自动获取更新</p>
-              <p><strong>RSS 地址：</strong> <code>https://my-blog-kappa-teal.vercel.app/rss.xml</code></p>
-              <p><a href="https://my-blog-kappa-teal.vercel.app">← 返回博客首页</a></p>
+              <p><strong>RSS 地址：</strong> <code>https://moji-my-blog.vercel.app/rss.xml</code></p>
+              <p><a href="https://moji-my-blog.vercel.app">← 返回博客首页</a></p>
             </div>
           </header>
 
@@ -192,7 +192,7 @@
           </ul>
 
           <footer>
-            <p>🤖 由 <a href="https://my-blog-kappa-teal.vercel.app">墨迹笔记</a> 自动生成</p>
+            <p>🤖 由 <a href="https://moji-my-blog.vercel.app">墨迹笔记</a> 自动生成</p>
           </footer>
         </div>
       </body>
