@@ -219,6 +219,16 @@ export function getAllPostSlugs(): string[] {
 }
 
 /**
+ * 生成 URL 友好的 slug
+ */
+export function generateSlug(text: string): string {
+  return text.toLowerCase()
+    .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+/**
  * 获取所有专栏
  */
 export function getAllSeries(): Series[] {
@@ -238,7 +248,7 @@ export function getAllSeries(): Series[] {
 
   return Array.from(seriesMap.entries()).map(([name, data]) => ({
     name,
-    slug: name.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-'),
+    slug: generateSlug(name),
     count: data.count,
     description: data.description,
   }));

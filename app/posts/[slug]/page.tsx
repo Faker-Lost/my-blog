@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getPostBySlug, getAllPostSlugs, getSeriesNeighbors } from '@/lib/posts';
+import { getPostBySlug, getAllPostSlugs, getSeriesNeighbors, generateSlug } from '@/lib/posts';
 import TableOfContents from '@/components/TableOfContents';
 import Giscus from '@/components/Giscus';
 import { NavigationItem } from '@/components/SeriesNavigation';
@@ -146,7 +146,7 @@ export default async function PostPage({ params }: PostPageProps) {
                   专栏：{post.series}
                 </h3>
                 <Link
-                  href={`/series/${post.series.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-')}`}
+                  href={`/series/${generateSlug(post.series)}`}
                   className="ml-auto text-sm text-[var(--muted)] hover:text-[var(--accent)]
                             transition-colors flex items-center gap-1"
                 >

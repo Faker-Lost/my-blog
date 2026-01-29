@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getSeriesBySlug, getAllSeries } from '@/lib/posts';
+import { getSeriesBySlug, getAllSeries, generateSlug } from '@/lib/posts';
 import { Metadata } from 'next';
 
 interface SeriesPageProps {
