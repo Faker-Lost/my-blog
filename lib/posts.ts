@@ -301,3 +301,45 @@ export function getSeriesNeighbors(post: PostMeta): {
     next: currentIndex < seriesPosts.length - 1 ? seriesPosts[currentIndex + 1] : null,
   };
 }
+
+/**
+ * 分页数据类型
+ */
+export interface PaginatedPostsResult {
+  posts: PostMeta[];
+  totalPages: number;
+  currentPage: number;
+  totalPosts: number;
+}
+
+/**
+ * 获取分页文章（不含精选文章）
+ * @param page 页码（从1开始）
+ * @param limit 每页数量
+ */
+export function getPaginatedPosts(
+  page: number = 1,
+  limit: number = 10
+): PaginatedPostsResult {
+  const allPosts = getAllPosts();
+  // 排除精选文章
+  const regularPosts = allPosts.filter((post) => !post.featured);
+  const totalPosts = regularPosts.length;
+  const totalPages = Math.ceil(totalPosts / limit);
+
+  // 验证页码范围
+  if (page < 1) page = 1;
+  if (page > totalPages && totalPages > 0) page = totalPages;
+
+  // 计算切片范围
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  const posts = regularPosts.slice(start, end);
+
+  return {
+    posts,
+    totalPages,
+    currentPage: page,
+    totalPosts,
+  };
+}
