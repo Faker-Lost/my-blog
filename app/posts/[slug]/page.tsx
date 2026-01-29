@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getPostBySlug, getAllPostSlugs } from '@/lib/posts';
+import { getPostBySlug, getAllPostSlugs, getSeriesNeighbors } from '@/lib/posts';
 import TableOfContents from '@/components/TableOfContents';
 import Giscus from '@/components/Giscus';
+import { NavigationItem } from '@/components/SeriesNavigation';
 import { format } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 
@@ -51,6 +52,9 @@ export default async function PostPage({ params }: PostPageProps) {
   const formattedDate = post.date
     ? format(new Date(post.date), 'yyyy年M月d日', { locale: zhCN })
     : '';
+
+  // 获取专栏相邻文章
+  const { prev, next } = getSeriesNeighbors(post);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12 page-transition">
@@ -129,6 +133,36 @@ export default async function PostPage({ params }: PostPageProps) {
             className="prose"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
+          {/* 专栏章节导航 */}
+          {post.series && (
+            <nav className="mt-12 pt-8 border-t border-[var(--border)]">
+              <div className="flex items-center gap-2 mb-4">
+                <svg className="w-5 h-5 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <h3 className="font-semibold text-[var(--foreground)]">
+                  专栏：{post.series}
+                </h3>
+                <Link
+                  href={`/series/${post.series.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-')}`}
+                  className="ml-auto text-sm text-[var(--muted)] hover:text-[var(--accent)]
+                            transition-colors flex items-center gap-1"
+                >
+                  查看完整专栏
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <NavigationItem post={prev} type="prev" />
+                <NavigationItem post={next} type="next" />
+              </div>
+            </nav>
+          )}
 
           {/* 评论系统 */}
           <Giscus />

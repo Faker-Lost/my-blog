@@ -34,6 +34,12 @@ export default function Header() {
             首页
           </Link>
           <Link
+            href="/series"
+            className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+          >
+            专栏
+          </Link>
+          <Link
             href="/tags"
             className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
           >

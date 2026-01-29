@@ -3,6 +3,7 @@ import PostCard from '@/components/PostCard';
 import Search from '@/components/Search';
 import TagCloudCard from '@/components/TagCloudCard';
 import ArchiveCard from '@/components/ArchiveCard';
+import SeriesCard from '@/components/SeriesCard';
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -86,6 +87,9 @@ export default function HomePage() {
 
         {/* 右侧：侧边栏 */}
         <aside className="space-y-6">
+          {/* 专栏卡片 */}
+          <SeriesCard />
+
           {/* 标签云卡片 */}
           <TagCloudCard tags={tags} />
 

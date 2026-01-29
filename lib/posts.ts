@@ -17,12 +17,27 @@ export interface PostMeta {
   tags: string[];
   coverImage?: string;
   featured?: boolean; // 是否为精选文章
+  series?: string; // 所属专栏
+  seriesOrder?: number; // 在专栏中的章节顺序
 }
 
 // 完整文章类型（含内容）
 export interface Post extends PostMeta {
   content: string;
   headings: Heading[];
+}
+
+// 专栏类型定义
+export interface Series {
+  name: string;
+  slug: string;
+  count: number;
+  description?: string;
+}
+
+// 专栏详情类型
+export interface SeriesDetail extends Series {
+  posts: PostMeta[];
 }
 
 // 目录标题类型
@@ -59,6 +74,8 @@ export function getAllPosts(): PostMeta[] {
         tags: data.tags || [],
         coverImage: data.coverImage,
         featured: data.featured || false,
+        series: data.series,
+        seriesOrder: data.seriesOrder,
       } as PostMeta;
     });
 
@@ -97,6 +114,8 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       tags: data.tags || [],
       coverImage: data.coverImage,
       featured: data.featured || false,
+      series: data.series,
+      seriesOrder: data.seriesOrder,
       content: htmlContent,
       headings,
     };
@@ -197,4 +216,78 @@ export function getAllPostSlugs(): string[] {
   return fs.readdirSync(postsDirectory)
     .filter((name) => name.endsWith('.md'))
     .map((name) => name.replace(/\.md$/, ''));
+}
+
+/**
+ * 获取所有专栏
+ */
+export function getAllSeries(): Series[] {
+  const posts = getAllPosts();
+  const seriesMap = new Map<string, { count: number; description?: string }>();
+
+  posts.forEach((post) => {
+    if (post.series) {
+      const existing = seriesMap.get(post.series);
+      if (existing) {
+        existing.count++;
+      } else {
+        seriesMap.set(post.series, { count: 1 });
+      }
+    }
+  });
+
+  return Array.from(seriesMap.entries()).map(([name, data]) => ({
+    name,
+    slug: name.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-'),
+    count: data.count,
+    description: data.description,
+  }));
+}
+
+/**
+ * 根据专栏 slug 获取专栏详情
+ */
+export function getSeriesBySlug(slug: string): SeriesDetail | null {
+  const posts = getAllPosts();
+  const series = getAllSeries().find((s) => s.slug === slug);
+
+  if (!series) return null;
+
+  const seriesPosts = posts
+    .filter((post) => post.series === series.name)
+    .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0));
+
+  return {
+    ...series,
+    posts: seriesPosts,
+  };
+}
+
+/**
+ * 根据专栏名称获取文章
+ */
+export function getPostsBySeries(seriesName: string): PostMeta[] {
+  return getAllPosts()
+    .filter((post) => post.series === seriesName)
+    .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0));
+}
+
+/**
+ * 获取文章在专栏中的相邻文章
+ */
+export function getSeriesNeighbors(post: PostMeta): {
+  prev: PostMeta | null;
+  next: PostMeta | null;
+} {
+  if (!post.series) {
+    return { prev: null, next: null };
+  }
+
+  const seriesPosts = getPostsBySeries(post.series);
+  const currentIndex = seriesPosts.findIndex((p) => p.slug === post.slug);
+
+  return {
+    prev: currentIndex > 0 ? seriesPosts[currentIndex - 1] : null,
+    next: currentIndex < seriesPosts.length - 1 ? seriesPosts[currentIndex + 1] : null,
+  };
 }
