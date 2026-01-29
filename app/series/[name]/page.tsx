@@ -4,9 +4,9 @@ import { getSeriesBySlug, getAllSeries } from '@/lib/posts';
 import { Metadata } from 'next';
 
 interface SeriesPageProps {
-  params: {
+  params: Promise<{
     name: string;
-  };
+  }>;
 }
 
 // 生成静态参数
@@ -19,7 +19,8 @@ export async function generateStaticParams() {
 
 // 生成元数据
 export async function generateMetadata({ params }: SeriesPageProps): Promise<Metadata> {
-  const series = getSeriesBySlug(params.name);
+  const { name } = await params;
+  const series = getSeriesBySlug(name);
 
   if (!series) {
     return {
@@ -33,8 +34,9 @@ export async function generateMetadata({ params }: SeriesPageProps): Promise<Met
   };
 }
 
-export default function SeriesPage({ params }: SeriesPageProps) {
-  const series = getSeriesBySlug(params.name);
+export default async function SeriesPage({ params }: SeriesPageProps) {
+  const { name } = await params;
+  const series = getSeriesBySlug(name);
 
   if (!series) {
     notFound();
