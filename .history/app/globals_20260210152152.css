@@ -1,0 +1,481 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode manually for v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* 浅色主题 - 现代极简 & 科技感 */
+  --background: #ffffff;
+  --foreground: #1a1a2e;
+  /* 更深的蓝黑色，对比度更高 */
+  --accent: #0284c7;
+  /* Sky-600 */
+  --accent-glow: rgba(2, 132, 199, 0.15);
+  --muted: #64748b;
+  /* Slate-500 */
+  --border: #e2e8f0;
+  /* Slate-200 */
+  --card: rgba(255, 255, 255, 0.8);
+  --header-bg: rgba(255, 255, 255, 0.82);
+  --grid-color: rgba(0, 0, 0, 0.018);
+
+  /* 字体 —— Inter 作为主字体，中文回退到系统字体 */
+  --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* 暗黑主题 */
+.dark {
+  --background: #0a0a0f;
+  /* 更纯的深黑 */
+  --foreground: #e4e4ef;
+  /* 柔和的白 */
+  --accent: #22d3ee;
+  /* Cyan-400 */
+  --accent-glow: rgba(34, 211, 238, 0.15);
+  --muted: #8892a4;
+  /* 稍亮的灰 */
+  --border: #1e1e2e;
+  /* 深紫灰 */
+  --card: rgba(16, 16, 24, 0.6);
+  --header-bg: rgba(10, 10, 15, 0.8);
+  --grid-color: rgba(255, 255, 255, 0.015);
+}
+
+/* ========================================
+   全局基础样式
+   ======================================== */
+
+body {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 48px 48px;
+  /* 稍大的网格 */
+  background-position: center top;
+
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 0%, transparent 0%, var(--background) 70%);
+  z-index: -1;
+}
+
+/* ========================================
+   标题样式 — 等宽字体 + 清晰层次
+   ======================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+  line-height: 1.35;
+}
+
+/* ========================================
+   Prose (文章内容排版) — 舒适阅读
+   ======================================== */
+
+.prose {
+  --tw-prose-body: #2d3748;
+  --tw-prose-headings: #0f172a;
+  --tw-prose-links: var(--accent);
+  --tw-prose-code: var(--accent);
+  --tw-prose-quotes: var(--muted);
+
+  font-size: 1.125rem;
+  /* 18px — 舒适阅读大小 */
+  max-width: none;
+  font-weight: 400;
+  color: var(--tw-prose-body);
+  line-height: 2;
+  /* 双倍行高 — 中文阅读黄金比例 */
+  letter-spacing: 0.02em;
+
+  background: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.dark .prose {
+  --tw-prose-body: #c8ceda;
+  --tw-prose-headings: #eef0f6;
+}
+
+/* --- 段落 --- */
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.75em;
+}
+
+/* --- 标题层次 --- */
+.prose h1 {
+  font-size: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 3rem;
+  margin-top: 0;
+  line-height: 1.25;
+}
+
+.prose h2 {
+  font-size: 1.875rem;
+  margin-top: 4rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  /* h2 也加底线，增强结构感 */
+}
+
+.prose h2::before {
+  content: none;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+}
+
+.prose h4 {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* --- 链接 --- */
+.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+  font-weight: 500;
+}
+
+.prose a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* --- 引用 --- */
+.prose blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-glow);
+  padding: 1rem 1.5rem;
+  margin: 2.5rem 0;
+  font-style: italic;
+  color: var(--foreground);
+  opacity: 0.9;
+  border-radius: 0 8px 8px 0;
+}
+
+/* --- 表格 --- */
+.prose table {
+  width: 100%;
+  table-layout: auto;
+  text-align: left;
+  margin-top: 3em;
+  margin-bottom: 3em;
+  font-size: 0.95em;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.prose thead {
+  border-bottom: 2px solid var(--border);
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+.dark .prose thead {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.prose th {
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 1.25rem;
+  vertical-align: bottom;
+  border-right: 1px solid var(--border);
+}
+
+.prose th:last-child {
+  border-right: none;
+}
+
+.prose td {
+  padding: 1rem 1.25rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.prose td:last-child {
+  border-right: none;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+/* --- 列表 --- */
+.prose ul,
+.prose ol {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1.75rem;
+}
+
+.prose ul>li,
+.prose ol>li {
+  position: relative;
+  padding-left: 0.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
+}
+
+.prose ul>li::marker {
+  color: var(--accent);
+}
+
+/* 移除自定义圆点，改用默认 marker 着色 */
+.prose ul>li::before {
+  content: none;
+}
+
+/* --- 代码块 --- */
+.prose pre {
+  background: #0d1117 !important;
+  /* GitHub Dark 风格 */
+  color: #e6edf3 !important;
+  border: 1px solid #21262d;
+  border-radius: 8px;
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.prose :not(pre)>code {
+  background: var(--accent-glow);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* --- 图片 --- */
+.prose img {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 3rem auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.dark .prose img {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* --- 分隔线 --- */
+.prose hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 4rem 0;
+}
+
+/* ========================================
+   Glitch Effect — Logo 动画
+   ======================================== */
+
+.glitch-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch {
+  position: relative;
+  color: var(--foreground);
+}
+
+.glitch:before,
+.glitch:after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.group:hover .glitch:before {
+  color: #0ff;
+  z-index: 2;
+  opacity: 1;
+  animation: glitch-anim-1 0.3s infinite linear alternate-reverse;
+}
+
+.group:hover .glitch:after {
+  color: #f0f;
+  z-index: 1;
+  opacity: 1;
+  animation: glitch-anim-2 0.3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip-path: inset(20% 0 80% 0);
+    transform: translate(-2px, 1px);
+  }
+
+  20% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(2px, -1px);
+  }
+
+  40% {
+    clip-path: inset(40% 0 50% 0);
+    transform: translate(-2px, 2px);
+  }
+
+  60% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(2px, -2px);
+  }
+
+  80% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-1px, 1px);
+  }
+
+  100% {
+    clip-path: inset(30% 0 20% 0);
+    transform: translate(1px, -1px);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: inset(15% 0 60% 0);
+    transform: translate(2px, 1px);
+  }
+
+  20% {
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(-2px, -1px);
+  }
+
+  40% {
+    clip-path: inset(20% 0 70% 0);
+    transform: translate(2px, 2px);
+  }
+
+  60% {
+    clip-path: inset(70% 0 10% 0);
+    transform: translate(-2px, -2px);
+  }
+
+  80% {
+    clip-path: inset(10% 0 40% 0);
+    transform: translate(1px, 1px);
+  }
+
+  100% {
+    clip-path: inset(40% 0 20% 0);
+    transform: translate(-1px, -1px);
+  }
+}
+
+/* ========================================
+   页面过渡动画
+   ======================================== */
+
+.page-transition {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   滚动条美化
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* ========================================
+   选中文本样式
+   ======================================== */
+
+::selection {
+  background: var(--accent-glow);
+  color: var(--foreground);
+}

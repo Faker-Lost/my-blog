@@ -1,0 +1,379 @@
+@import "tailwindcss";
+
+:root {
+  /* 浅色主题 - 现代极简 & 科技感 */
+  --background: #ffffff;
+  --foreground: #1e293b;
+  /* Slate-800 */
+  --accent: #0284c7;
+  /* Sky-600 */
+  --accent-glow: rgba(2, 132, 199, 0.4);
+  --muted: #64748b;
+  /* Slate-500 */
+  --border: #e2e8f0;
+  /* Slate-200 */
+  --card: rgba(255, 255, 255, 0.8);
+  /* 半透明白 */
+  --header-bg: rgba(255, 255, 255, 0.75);
+  --grid-color: rgba(0, 0, 0, 0.02);
+  /* 极淡网格 */
+
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* 暗黑主题 */
+.dark {
+  --background: #09090b;
+  /* Zinc-950 */
+  --foreground: #e2e8f0;
+  /* Slate-200 */
+  --accent: #22d3ee;
+  /* Cyan-400 */
+  --accent-glow: rgba(34, 211, 238, 0.3);
+  --muted: #94a3b8;
+  /* Slate-400 */
+  --border: #27272a;
+  /* Zinc-800 */
+  --card: rgba(24, 24, 27, 0.6);
+  --header-bg: rgba(9, 9, 11, 0.7);
+  --grid-color: rgba(255, 255, 255, 0.02);
+}
+
+body {
+  background-color: var(--background);
+  /* 保留极淡的背景网格，作为唯一的主题特征 */
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center top;
+
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 0%, transparent 0%, var(--background) 100%);
+  z-index: -1;
+}
+
+/* 标题样式 - 回归经典，只保留字体特色 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+/* Prose (文章内容) - 还原经典墨迹笔记排版 */
+.prose {
+  /* 颜色 */
+  --tw-prose-body: #334155;
+  --tw-prose-headings: #0f172a;
+  --tw-prose-links: var(--accent);
+  --tw-prose-code: var(--accent);
+  --tw-prose-quotes: var(--muted);
+
+  font-size: 1.05rem;
+  max-width: none;
+  font-weight: 450;
+  color: var(--tw-prose-body);
+
+  /* 无边框、无背景、纯净阅读 */
+  background: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.dark .prose {
+  --tw-prose-body: #cbd5e1;
+  --tw-prose-headings: #f1f5f9;
+}
+
+/* 标题 - 去掉修饰，回归纯粹 */
+.prose h1 {
+  font-size: 2.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  margin-top: 0;
+  line-height: 1.3;
+}
+
+.prose h2 {
+  font-size: 1.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+  padding-left: 0;
+  /* 移除左侧修饰线和 # 号 */
+  border-left: none;
+}
+
+/* 移除之前的 # 号伪元素 */
+.prose h2::before {
+  content: none;
+}
+
+.prose h3 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* 链接 - 经典样式 */
+.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.prose a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* 引用块 - 经典竖线样式 */
+.prose blockquote {
+  border-left: 4px solid var(--border);
+  /* 灰色竖线，更素雅 */
+  background: transparent;
+  /* 去掉背景色 */
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* 表格样式 - 规规矩矩 */
+.prose table {
+  width: 100%;
+  table-layout: auto;
+  text-align: left;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  font-size: 0.95em;
+  border-collapse: collapse;
+  /* 合并边框 */
+  border: 1px solid var(--border);
+  /* 外边框 */
+}
+
+.prose thead {
+  border-bottom: 2px solid var(--border);
+  background-color: rgba(0, 0, 0, 0.02);
+  /* 极淡的表头背景 */
+}
+
+.dark .prose thead {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.prose th {
+  color: var(--foreground);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  vertical-align: bottom;
+  border-right: 1px solid var(--border);
+  /* 竖向分隔线 */
+}
+
+.prose th:last-child {
+  border-right: none;
+}
+
+.prose td {
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  /* 横向分隔线 */
+  border-right: 1px solid var(--border);
+  /* 竖向分隔线 */
+}
+
+.prose td:last-child {
+  border-right: none;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+/* 列表样式 */
+.prose ul>li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.prose ul>li::marker {
+  color: var(--muted);
+  /* 还原默认圆点颜色 */
+  content: "";
+  /* 使用默认样式或者设为圆点 */
+}
+
+.prose ul>li::before {
+  content: "•";
+  position: absolute;
+  left: 0.25rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* 代码块 - 保持深色，对比度高 */
+.prose pre {
+  background: #0f172a !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.prose :not(pre)>code {
+  background: rgba(125, 211, 252, 0.1);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+/* 图片 */
+.prose img {
+  border-radius: 0;
+  /* 直角图片 */
+  border: 1px solid var(--border);
+  margin: 2rem auto;
+}
+
+/* Glitch Effect 保持不变，用于 Logo */
+.glitch-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch {
+  position: relative;
+  color: var(--foreground);
+}
+
+.glitch:before,
+.glitch:after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--background);
+}
+
+.group:hover .glitch:before {
+  color: #0ff;
+  z-index: 2;
+  opacity: 1;
+  animation: glitch-anim-1 0.3s infinite linear alternate-reverse;
+}
+
+.group:hover .glitch:after {
+  color: #f0f;
+  z-index: 1;
+  opacity: 1;
+  animation: glitch-anim-2 0.3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip-path: inset(20% 0 80% 0);
+    transform: translate(-2px, 1px);
+  }
+
+  20% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(2px, -1px);
+  }
+
+  40% {
+    clip-path: inset(40% 0 50% 0);
+    transform: translate(-2px, 2px);
+  }
+
+  60% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(2px, -2px);
+  }
+
+  80% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-1px, 1px);
+  }
+
+  100% {
+    clip-path: inset(30% 0 20% 0);
+    transform: translate(1px, -1px);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: inset(15% 0 60% 0);
+    transform: translate(2px, 1px);
+  }
+
+  20% {
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(-2px, -1px);
+  }
+
+  40% {
+    clip-path: inset(20% 0 70% 0);
+    transform: translate(2px, 2px);
+  }
+
+  60% {
+    clip-path: inset(70% 0 10% 0);
+    transform: translate(-2px, -2px);
+  }
+
+  80% {
+    clip-path: inset(10% 0 40% 0);
+    transform: translate(1px, 1px);
+  }
+
+  100% {
+    clip-path: inset(40% 0 20% 0);
+    transform: translate(-1px, -1px);
+  }
+}
