@@ -1,9 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getSeriesBySlug, getAllSeries } from '@/lib/posts';
+import { getSeriesBySlug, getAllSeries, generateSlug } from '@/lib/posts';
 import { Metadata } from 'next';
-import { format } from 'date-fns';
-import { zhCN } from 'date-fns/locale';
 
 interface SeriesPageProps {
   params: Promise<{
@@ -110,7 +108,7 @@ export default async function SeriesPage({ params }: SeriesPageProps) {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    {format(new Date(post.date), 'yyyy年MM月dd日', { locale: zhCN })}
+                    {String(post.date)}
                   </span>
 
                   {post.tags.length > 0 && (
