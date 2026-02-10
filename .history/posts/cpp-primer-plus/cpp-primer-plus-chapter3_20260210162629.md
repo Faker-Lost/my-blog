@@ -160,7 +160,7 @@ long long 范围: -9223372036854775808 ~ 9223372036854775807
 ### climits 中的常用常量
 
 | 常量 | 含义 |
-| ------ | ------ |
+|------|------|
 | `CHAR_BIT` | 1 字节的位数（通常为 8） |
 | `SHRT_MIN` / `SHRT_MAX` | `short` 的最小值 / 最大值 |
 | `INT_MIN` / `INT_MAX` | `int` 的最小值 / 最大值 |
@@ -446,7 +446,7 @@ bool isEqual(double a, double b, double epsilon = 1e-9) {
 ### cfloat 中的常用常量
 
 | 常量 | 含义 |
-| ------ | ------ |
+|------|------|
 | `FLT_DIG` | `float` 的有效数字位数（通常 6） |
 | `DBL_DIG` | `double` 的有效数字位数（通常 15） |
 | `FLT_MAX` / `FLT_MIN` | `float` 的最大值 / 最小正规化值 |
