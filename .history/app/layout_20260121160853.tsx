@@ -26,11 +26,6 @@ export const metadata: Metadata = {
     locale: "zh_CN",
     siteName: "🌈 墨迹笔记",
   },
-  verification: {
-    other: {
-      "baidu-site-verification": "codeva-wALds0TuPo",
-    },
-  },
 };
 
 export default function RootLayout({
