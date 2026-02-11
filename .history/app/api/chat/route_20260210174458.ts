@@ -1,0 +1,54 @@
+// 允许 Edge Runtime 提升性能
+export const runtime = 'edge';
+
+// 模拟的黑客风格回复库
+const MOCK_RESPONSES: Record<string, string> = {
+  'default': 'System initialised. Accessing blog databases... \n\n你好，我是 Faker :: Lost 的守护者。由于目前云端链接协议波动（代码 404/402），我已进入**离线安全模式**。尽管如此，我依然可以探讨关于代码与现实的本质。你想聊点什么？',
+  '内存对齐': '### 内存对齐 (Memory Alignment) 分析报告\n\n在 C++ 中，内存对齐是性能优化的核心。底层原理如下：\n1. **对齐模数 (Alignment Requirement)**：不同类型有不同的对齐要求（如 `int` 通常是 4 字节）。\n2. **结构体填充 (Padding)**：编译器为保证成员地址满足对齐要求，会插入空白字节。\n3. **`alignas` 与 `alignof`**：C++11 引入的关键字允许我们手动控制对齐方式。\n\n*Code is Reality. 这里的物理地址就是你的现实。*',
+  'weather': '系统正在连接气象卫星... [模拟工具调用]\n\n检测到您询问天气。由于处于 Mock Mode，我无法获取实时数据。但我可以告诉您：\n\n**CyberCity 当前天气**：\n- 温度：24°C (恒温控制)\n- 湿度：45%\n- 状况：霓虹雨 (Neon Rain)',
+  'C++': 'C++ 是这个世界的底层脚本。从底层的 RAII 管理到高层的模板元编程，它在不断模糊物质与逻辑的界限。',
+};
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+  const lastMessage = messages[messages.length - 1];
+
+  // 提取用户输入
+  const userText = lastMessage.parts?.find((p: any) => p.type === 'text')?.text || lastMessage.content || '';
+
+  console.log('Mock Mode - User Input:', userText);
+
+  // 匹配回复内容
+  let responseText = MOCK_RESPONSES['default'];
+  for (const key in MOCK_RESPONSES) {
+    if (userText.toLowerCase().includes(key.toLowerCase())) {
+      responseText = MOCK_RESPONSES[key];
+      break;
+    }
+  }
+
+  // 返回模拟的数据流
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      let index = 0;
+      // 模拟流式输出
+      function push() {
+        if (index < responseText.length) {
+          const chunk = responseText.slice(index, index + 5);
+          // AI SDK 6 协议格式: 0:text_content\n
+          controller.enqueue(encoder.encode(`0:${JSON.stringify(chunk)}\n`));
+          index += 5;
+          setTimeout(push, 30);
+        } else {
+          controller.close();
+        }
+      }
+      push();
+    },
+  });
+
+  return new Response(stream, {
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  });
+}
