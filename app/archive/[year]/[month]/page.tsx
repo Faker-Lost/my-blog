@@ -16,6 +16,8 @@ export async function generateStaticParams() {
     if (!post.date) return;
 
     const date = new Date(post.date);
+    if (Number.isNaN(date.getTime())) return;
+
     const year = date.getFullYear().toString();
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // "01", "02"...
 
@@ -65,6 +67,8 @@ export default async function ArchivePage({ params }: ArchivePageProps) {
     if (!post.date) return false;
 
     const date = new Date(post.date);
+    if (Number.isNaN(date.getTime())) return false;
+
     const postYear = date.getFullYear().toString();
     const postMonth = (date.getMonth() + 1).toString().padStart(2, '0');
 

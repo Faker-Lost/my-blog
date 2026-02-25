@@ -9,6 +9,31 @@ import remarkGfm from 'remark-gfm';
 const postsDirectory = path.join(process.cwd(), 'posts');
 
 /**
+ * 判断文件是否为内容模板文件
+ * 模板文件仅用于写作，不应参与站点路由与归档生成。
+ */
+function isTemplateMarkdown(fileName: string): boolean {
+  return /^template-.*\.md$/i.test(fileName);
+}
+
+/**
+ * 校验 frontmatter 中的日期是否合法
+ * 统一在数据入口过滤非法日期，避免下游页面格式化时抛错。
+ */
+function isValidPostDate(date: unknown): date is string {
+  if (typeof date !== 'string') {
+    return false;
+  }
+
+  const trimmedDate = date.trim();
+  if (!trimmedDate) {
+    return false;
+  }
+
+  return !Number.isNaN(new Date(trimmedDate).getTime());
+}
+
+/**
  * 递归扫描 posts 目录及子目录，获取所有 Markdown 文件
  * @param dir 要扫描的目录
  * @param baseDir 基础目录（用于计算相对路径）
@@ -27,7 +52,7 @@ function getAllMarkdownFiles(dir: string, baseDir: string = dir): string[] {
     if (entry.isDirectory()) {
       // 递归扫描子目录
       files.push(...getAllMarkdownFiles(fullPath, baseDir));
-    } else if (entry.name.endsWith('.md')) {
+    } else if (entry.name.endsWith('.md') && !isTemplateMarkdown(entry.name)) {
       files.push(fullPath);
     }
   }
@@ -94,6 +119,11 @@ export function getAllPosts(): PostMeta[] {
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data } = matter(fileContents);
 
+    // 过滤无效日期，避免归档页和日期格式化组件在构建期崩溃
+    if (!isValidPostDate(data.date)) {
+      return null;
+    }
+
     return {
       slug,
       title: data.title || slug,
@@ -107,7 +137,7 @@ export function getAllPosts(): PostMeta[] {
       seriesOrder: data.seriesOrder,
       readingTime: `${Math.ceil(matter(fileContents).content.replace(/\s/g, '').length / 400)} 分钟`,
     } as PostMeta;
-  });
+  }).filter((post): post is PostMeta => post !== null);
 
   // 按日期倒序排列
   return allPosts.sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -132,6 +162,11 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
     const fileContents = fs.readFileSync(targetFile, 'utf8');
     const { data, content } = matter(fileContents);
+
+    // 非法日期文章不参与发布路由，保持数据口径一致
+    if (!isValidPostDate(data.date)) {
+      return null;
+    }
 
     // 提取标题生成目录
     const headings = extractHeadings(content);
@@ -252,14 +287,8 @@ function addHeadingIds(html: string): string {
  * 获取所有文章的 slug（用于静态生成）
  */
 export function getAllPostSlugs(): string[] {
-  if (!fs.existsSync(postsDirectory)) {
-    return [];
-  }
-
-  // 递归扫描所有 Markdown 文件，返回 slug（仅文件名）
-  return getAllMarkdownFiles(postsDirectory).map((file) =>
-    path.basename(file, '.md')
-  );
+  // 复用统一过滤后的发布文章集合，避免 slug 与列表数据不一致
+  return getAllPosts().map((post) => post.slug);
 }
 
 /**
