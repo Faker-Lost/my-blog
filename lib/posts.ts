@@ -17,20 +17,30 @@ function isTemplateMarkdown(fileName: string): boolean {
 }
 
 /**
- * 校验 frontmatter 中的日期是否合法
- * 统一在数据入口过滤非法日期，避免下游页面格式化时抛错。
+ * 将 frontmatter 日期标准化为 YYYY-MM-DD。
+ * gray-matter 会把合法日期解析为 Date 对象，因此这里统一兼容 string / Date。
  */
-function isValidPostDate(date: unknown): date is string {
-  if (typeof date !== 'string') {
-    return false;
+function normalizePostDate(date: unknown): string | null {
+  let parsedDate: Date;
+
+  if (date instanceof Date) {
+    parsedDate = date;
+  } else if (typeof date === 'string') {
+    const trimmedDate = date.trim();
+    if (!trimmedDate) {
+      return null;
+    }
+    parsedDate = new Date(trimmedDate);
+  } else {
+    return null;
   }
 
-  const trimmedDate = date.trim();
-  if (!trimmedDate) {
-    return false;
+  if (Number.isNaN(parsedDate.getTime())) {
+    return null;
   }
 
-  return !Number.isNaN(new Date(trimmedDate).getTime());
+  // 统一为稳定格式，避免下游比较与格式化出现类型不一致
+  return parsedDate.toISOString().slice(0, 10);
 }
 
 /**
@@ -119,15 +129,17 @@ export function getAllPosts(): PostMeta[] {
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data } = matter(fileContents);
 
+    const normalizedDate = normalizePostDate(data.date);
+
     // 过滤无效日期，避免归档页和日期格式化组件在构建期崩溃
-    if (!isValidPostDate(data.date)) {
+    if (!normalizedDate) {
       return null;
     }
 
     return {
       slug,
       title: data.title || slug,
-      date: data.date || '',
+      date: normalizedDate,
       excerpt: data.excerpt || '',
       tags: data.tags || [],
       coverImage: data.coverImage,
@@ -163,8 +175,10 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     const fileContents = fs.readFileSync(targetFile, 'utf8');
     const { data, content } = matter(fileContents);
 
+    const normalizedDate = normalizePostDate(data.date);
+
     // 非法日期文章不参与发布路由，保持数据口径一致
-    if (!isValidPostDate(data.date)) {
+    if (!normalizedDate) {
       return null;
     }
 
@@ -185,7 +199,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     return {
       slug,
       title: data.title || slug,
-      date: data.date || '',
+      date: normalizedDate,
       excerpt: data.excerpt || '',
       tags: data.tags || [],
       coverImage: data.coverImage,
