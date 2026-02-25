@@ -1,11 +1,11 @@
 ---
-title: Qt 信号与槽详解教程
+title: Qt 开发教程 - 第2章 信号与槽机制
 date: 2026-01-27
 excerpt: 深入理解 Qt 信号与槽机制，掌握对象间通信的核心技术，包括基本语法、工作原理、高级用法和实战案例。
 
 series: Qt 教程
 seriesSlug: Qt
-seriesOrder: 1
+seriesOrder: 2
 tags:
   - Qt
   - C++
@@ -14,7 +14,7 @@ tags:
   - 教程
 ---
 
-## Qt 信号与槽详解教程
+## 第2章：Qt 信号与槽机制
 
 信号与槽（Signals and Slots）是 Qt 框架的核心特性，用于实现对象间的通信。它类似于其他语言中的回调函数或事件处理机制，但更加灵活、类型安全且易于使用。
 
