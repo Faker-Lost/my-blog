@@ -18,6 +18,17 @@
   --card: rgba(255, 255, 255, 0.8);
   --header-bg: rgba(255, 255, 255, 0.82);
   --grid-color: rgba(0, 0, 0, 0.018);
+  --code-bg: #f8fafc;
+  --code-fg: #0f172a;
+  --code-border: #dbe5f0;
+  --code-inline-bg: rgba(2, 132, 199, 0.12);
+  --code-inline-fg: #0369a1;
+  --code-selection-bg: rgba(2, 132, 199, 0.24);
+  --code-selection-fg: #0b1220;
+  --code-copy-bg: rgba(148, 163, 184, 0.16);
+  --code-copy-bg-hover: rgba(148, 163, 184, 0.28);
+  --code-copy-fg: #334155;
+  --code-copy-border: rgba(148, 163, 184, 0.32);
 
   /* 字体 —— Inter 作为主字体，中文回退到系统字体 */
   --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
@@ -51,6 +62,17 @@
   --card: rgba(16, 16, 24, 0.6);
   --header-bg: rgba(10, 10, 15, 0.8);
   --grid-color: rgba(255, 255, 255, 0.015);
+  --code-bg: #0d1117;
+  --code-fg: #e6edf3;
+  --code-border: #21262d;
+  --code-inline-bg: rgba(34, 211, 238, 0.18);
+  --code-inline-fg: #67e8f9;
+  --code-selection-bg: rgba(34, 211, 238, 0.3);
+  --code-selection-fg: #f8fafc;
+  --code-copy-bg: rgba(30, 41, 59, 0.62);
+  --code-copy-bg-hover: rgba(51, 65, 85, 0.8);
+  --code-copy-fg: #cbd5e1;
+  --code-copy-border: rgba(148, 163, 184, 0.28);
 }
 
 /* ========================================
@@ -285,10 +307,9 @@ h6 {
 
 /* --- 代码块 --- */
 .prose pre {
-  background: #0d1117 !important;
-  /* GitHub Dark 风格 */
-  color: #e6edf3 !important;
-  border: 1px solid #21262d;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-border);
   border-radius: 8px;
   margin: 2.5rem 0;
   padding: 1.5rem;
@@ -296,16 +317,42 @@ h6 {
   font-family: var(--font-mono);
   font-size: 0.9rem;
   line-height: 1.7;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.prose pre code {
+  color: inherit;
+  background: transparent;
+  font-family: inherit;
 }
 
 .prose :not(pre)>code {
-  background: var(--accent-glow);
-  color: var(--accent);
+  background: var(--code-inline-bg);
+  color: var(--code-inline-fg);
   font-family: var(--font-mono);
   font-size: 0.88em;
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   font-weight: 500;
+  border: 1px solid var(--code-border);
+}
+
+.prose pre::selection,
+.prose pre *::selection {
+  background: var(--code-selection-bg);
+  color: var(--code-selection-fg);
+}
+
+.code-block-wrapper .code-copy-btn {
+  background: var(--code-copy-bg);
+  color: var(--code-copy-fg);
+  border: 1px solid var(--code-copy-border);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.code-block-wrapper .code-copy-btn:hover,
+.code-block-wrapper .code-copy-btn:focus-visible {
+  background: var(--code-copy-bg-hover);
 }
 
 /* --- 图片 --- */

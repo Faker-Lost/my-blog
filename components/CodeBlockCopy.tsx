@@ -31,10 +31,9 @@ export default function CodeBlockCopy() {
       // 2. 创建复制按钮
       const button = document.createElement('button');
       button.className = `
-        absolute top-2 right-2 p-1.5 rounded-md
-        bg-gray-700/50 hover:bg-gray-600 text-gray-300
-        opacity-0 group-hover:opacity-100 transition-all duration-200
-        text-xs flex items-center gap-1 backdrop-blur-sm
+        code-copy-btn absolute top-2 right-2 p-1.5 rounded-md
+        opacity-0 group-hover:opacity-100 focus-visible:opacity-100
+        transition-all duration-200 text-xs flex items-center gap-1 backdrop-blur-sm
       `;
       button.innerHTML = `
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

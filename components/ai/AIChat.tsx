@@ -192,8 +192,14 @@ export default function AIChat({ chatId, initialMessages, onFinish }: AIChatProp
 // Simple Helper for Code Blocks
 function CodeBlock({ className, children, ...props }: any) {
   return (
-    <pre className={clsx("relative group rounded-xl my-6 bg-[#1a1a2e] border border-zinc-200 dark:border-zinc-700 shadow-sm overflow-x-auto p-5", className)} {...props}>
-      <code className="font-mono text-[13px] text-cyan-100 leading-relaxed">{children}</code>
+    <pre
+      className={clsx(
+        "relative group rounded-xl my-6 bg-[var(--code-bg)] text-[var(--code-fg)] border border-[var(--code-border)] shadow-sm overflow-x-auto p-5 transition-colors",
+        className
+      )}
+      {...props}
+    >
+      <code className="font-mono text-[13px] leading-relaxed">{children}</code>
     </pre>
   );
 }
