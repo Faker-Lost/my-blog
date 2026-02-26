@@ -221,8 +221,8 @@ export default async function PostPage({ params }: PostPageProps) {
           </article>
 
           {/* 侧边目录 - 仅在大屏幕显示 */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
-            <div className="sticky top-24">
+          <aside className="hidden lg:block w-72 flex-shrink-0">
+            <div className="sticky top-8 h-[calc(100vh-6rem)]">
               <TableOfContents headings={post.headings} />
             </div>
           </aside>
